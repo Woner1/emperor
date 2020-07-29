@@ -102,8 +102,8 @@ def publish_image(String tag) {
   withEnv(["FULL_IMAGE_TAG=${tag}"]) {
     image = docker.image("${APPLICATION_NAME}:${FULL_IMAGE_TAG}")
     // push to ECR
-    withCredentials([string(credentialsId: 'app_keeper_aws_access_key_id', variable: 'AWS_ACCESS_KEY_ID'),
-                    string(credentialsId: 'app_keeper_aws_secret_access_key', variable: 'AWS_SECRET_ACCESS_KEY')]) {
+    withCredentials([string(credentialsId: 'app_keeper_aws_access_key_id', variable: 'AKIAT5K63EIWVKKEXZHU'),
+                    string(credentialsId: 'app_keeper_aws_secret_access_key', variable: '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')]) {
       sh '''
       docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
       docker push "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
