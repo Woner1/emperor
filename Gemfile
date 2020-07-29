@@ -6,6 +6,9 @@ ruby '2.5.1'
 gem 'rubocop', '~> 0.85.1', require: false
 # code style checker
 
+gem 'sentry-raven'
+# send message to sentry
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.3'
