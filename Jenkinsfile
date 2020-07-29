@@ -34,16 +34,11 @@ node {
       echo "CI_ENV VALUE: ${CI_ENV}"
       // env.BUILD_HOB_CAUSE = getBuildCause()
       // echo "BUILD_JOB_CAUSE: ${BUILD_HOB_CAUSE}"
-
-
-
-      echo "This is ${env.BRANCH_NAME}"
-
-
-      def branchName = getCurrentBranch()
-      echo 'My branch is' + branchName
-
       // build docker image
+
+      // set BRANCH_NAME value
+      def BRANCH_NAME ="develop"
+
       if(env.TAG_NAME){
         build_app_image('hk_prod')
       }else{
@@ -132,11 +127,4 @@ def deploy_image(String app_env){
       string(name: 'DEPLOY_ENV', value: "${app_env}"),
       string(name: 'DEPLOY_VERSION', value: "${IMAGE_TAG}")]
   }
-}
-
-def getCurrentBranch () {
-    return sh (
-        script: 'git rev-parse --abbrev-ref HEAD',
-        returnStdout: true
-    ).trim()
 }
