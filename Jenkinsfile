@@ -100,11 +100,15 @@ def build_app_image(String application_env) {
 }
 
 def publish_image(String tag) {
+  // exp
   withEnv(["FULL_IMAGE_TAG=${tag}"]) {
     image = docker.image("${APPLICATION_NAME}:${FULL_IMAGE_TAG}")
     echo "image: ${image}"
     docker.withRegistry("https://${ECR_REGISTRY}", "ecr:${AWS_REGION}:emperor-aws-ecr") {
-      sh "docker push ${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
+      // docker.image("${APPLICATION_NAME}").push("latest")
+      def customImage = docker.build("${APPLICATION_NAME}:${FULL_IMAGE_TAG}")
+      /* Push the container to the custom Registry */
+      customImage.push()
     }
       // sh '''
       // docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
