@@ -4,7 +4,6 @@ properties([
   pipelineTriggers([[$class: 'PeriodicFolderTrigger', interval: '1d']]),
 ])
 
-
 node {
   catchError {
     timeout(time: 30, unit: 'MINUTES') {
@@ -35,7 +34,21 @@ node {
       echo "CI_ENV VALUE: ${CI_ENV}"
       // env.BUILD_HOB_CAUSE = getBuildCause()
       // echo "BUILD_JOB_CAUSE: ${BUILD_HOB_CAUSE}"
+
+
+
       echo "This is ${env.BRANCH_NAME}"
+
+
+      def branchName = getCurrentBranch()
+      echo 'My branch is' + branchName
+
+      def getCurrentBranch () {
+          return sh (
+              script: 'git rev-parse --abbrev-ref HEAD',
+              returnStdout: true
+          ).trim()
+      }
 
       // build docker image
       if(env.TAG_NAME){
