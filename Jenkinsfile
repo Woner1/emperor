@@ -43,13 +43,6 @@ node {
       def branchName = getCurrentBranch()
       echo 'My branch is' + branchName
 
-      def getCurrentBranch () {
-          return sh (
-              script: 'git rev-parse --abbrev-ref HEAD',
-              returnStdout: true
-          ).trim()
-      }
-
       // build docker image
       if(env.TAG_NAME){
         build_app_image('hk_prod')
@@ -139,4 +132,11 @@ def deploy_image(String app_env){
       string(name: 'DEPLOY_ENV', value: "${app_env}"),
       string(name: 'DEPLOY_VERSION', value: "${IMAGE_TAG}")]
   }
+}
+
+def getCurrentBranch () {
+    return sh (
+        script: 'git rev-parse --abbrev-ref HEAD',
+        returnStdout: true
+    ).trim()
 }
