@@ -28,8 +28,8 @@ node {
       // set ci && skipbuild
       env.CI_ENV = sh(returnStdout: true, script: "git log -1 --format=%B  | sed -n 's/^.*\\[ci \\(.*\\)\\].*/\\1/p'").trim()
       echo "CI_ENV VALUE: ${CI_ENV}"
-      env.BUILD_HOB_CAUSE = getBuildCause()
-      echo "BUILD_JOB_CAUSE: ${BUILD_HOB_CAUSE}"
+      // env.BUILD_HOB_CAUSE = getBuildCause()
+      // echo "BUILD_JOB_CAUSE: ${BUILD_HOB_CAUSE}"
 
       // build docker image
       if(env.TAG_NAME){
@@ -95,24 +95,24 @@ def publish_image(String tag) {
     '''
   }
 }
-def getBuildCause(){
-  def causes = currentBuild.getBuildCauses()
-  println causes
-  gitBranchCause  = currentBuild.getBuildCauses('jenkins.branch.BranchEventCause')
-  SCMCause        = currentBuild.getBuildCauses('hudson.triggers.SCMTrigger$SCMTriggerCause')
-  UserCause       = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
-  def buildCause = ''
-  if (gitBranchCause) {
-    buildCause = 'GITHUB'
-  } else if (SCMCause) {
-    buildCause = 'SCM'
-  } else if (UserCause) {
-    buildCause = 'USER'
-  } else {
-    println 'This job cant be triggered however it was just triggered, sorry.'
-  }
-  return buildCause;
-}
+// def getBuildCause(){
+//   def causes = currentBuild.getBuildCauses()
+//   println causes
+//   gitBranchCause  = currentBuild.getBuildCauses('jenkins.branch.BranchEventCause')
+//   SCMCause        = currentBuild.getBuildCauses('hudson.triggers.SCMTrigger$SCMTriggerCause')
+//   UserCause       = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
+//   def buildCause = ''
+//   if (gitBranchCause) {
+//     buildCause = 'GITHUB'
+//   } else if (SCMCause) {
+//     buildCause = 'SCM'
+//   } else if (UserCause) {
+//     buildCause = 'USER'
+//   } else {
+//     println 'This job cant be triggered however it was just triggered, sorry.'
+//   }
+//   return buildCause;
+// }
 
 def deploy_image(String app_env){
   if(shouldDeploy("${app_env}")){
