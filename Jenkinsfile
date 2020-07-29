@@ -1,4 +1,9 @@
 #!/usr/bin/env groovy
+properties([
+  buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '15', numToKeepStr: '')),
+  pipelineTriggers([[$class: 'PeriodicFolderTrigger', interval: '1d']]),
+])
+
 
 node {
   catchError {
@@ -30,8 +35,8 @@ node {
       echo "CI_ENV VALUE: ${CI_ENV}"
       // env.BUILD_HOB_CAUSE = getBuildCause()
       // echo "BUILD_JOB_CAUSE: ${BUILD_HOB_CAUSE}"
-      echo "${env.BRANCH_NAME}"
-      
+      echo "This is ${env.BRANCH_NAME}"
+
       // build docker image
       if(env.TAG_NAME){
         build_app_image('hk_prod')
