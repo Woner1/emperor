@@ -13,7 +13,7 @@ RUN mkdir /app
 WORKDIR /app/
 
 ADD Gemfile* /app/
-RUN gem install bundler -v '<2' && bundler install --deployment --jobs 4 --without development test
+RUN gem install bundler -v '<2' && bundler install --deployment --without development test
 
 ARG APP_COMMIT
 ENV APP_COMMIT ${APP_COMMIT}
