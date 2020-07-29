@@ -102,11 +102,13 @@ def publish_image(String tag) {
   withEnv(["FULL_IMAGE_TAG=${tag}"]) {
     image = docker.image("${APPLICATION_NAME}:${FULL_IMAGE_TAG}")
     // push to ECR
-    echo "dokcer image_name: --> ${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
-    sh '''
-    docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
-    docker push "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
-    '''
+    withCredentials([string(credentialsId: 'app_keeper_aws_access_key_id', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'app_keeper_aws_secret_access_key', variable: 'AWS_SECRET_ACCESS_KEY')]) {
+      sh '''
+      docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
+      docker push "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
+      '''
+    }
   }
 }
 // def getBuildCause(){
