@@ -28,7 +28,7 @@ node {
       // set ci && skipbuild
       env.CI_ENV = sh(returnStdout: true, script: "git log -1 --format=%B  | sed -n 's/^.*\\[ci \\(.*\\)\\].*/\\1/p'").trim()
       echo "CI_ENV VALUE: ${CI_ENV}"
-      env.BUILD_HOB_CAUSE = getBuildCase()
+      env.BUILD_HOB_CAUSE = getBuildCause()
       echo "BUILD_JOB_CAUSE: ${BUILD_HOB_CAUSE}"
 
       // build docker image
@@ -95,22 +95,21 @@ def publish_image(String tag) {
     '''
   }
 }
-
-def getBuildCase() {
-  def causes = currentBuild.getBuildCases()
+def getBuildCause(){
+  def causes = currentBuild.getBuildCauses()
   println causes
   gitBranchCause  = currentBuild.getBuildCauses('jenkins.branch.BranchEventCause')
   SCMCause        = currentBuild.getBuildCauses('hudson.triggers.SCMTrigger$SCMTriggerCause')
   UserCause       = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
   def buildCause = ''
-  if(gitBranchCause) {
+  if (gitBranchCause) {
     buildCause = 'GITHUB'
-  }else if(SCMCause) {
+  } else if (SCMCause) {
     buildCause = 'SCM'
-  }else if(UserCause) {
+  } else if (UserCause) {
     buildCause = 'USER'
-  }else {
-    println 'The job cant be tiggered howerver it was just triggered, sorry'
+  } else {
+    println 'This job cant be triggered however it was just triggered, sorry.'
   }
   return buildCause;
 }
