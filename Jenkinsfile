@@ -12,6 +12,7 @@ node {
       env.DEPLOYMENT_PROJECT_NAME = "emperor_deployment"
       
       stage('Clone Repository') {
+        sh "chmod +x -R ${env.WORKSPACE}"
         def scmVars = checkout([
           $class: 'GitSCM',
           branches: scm.branches,
