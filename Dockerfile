@@ -34,7 +34,7 @@ ENV RAILS_ENV=production
 
 ADD . /app/
 # RUN ["bin/bash", "-C", "docker-build.sh"]
-RUN ["bin/bash", "-C", "docker-migrate.sh"]
+# RUN ["bin/bash", "-C", "docker-migrate.sh"]
 RUN ["bin/bash", "-C", "docker-build-assets.sh"]
 
 EXPOSE 3000
