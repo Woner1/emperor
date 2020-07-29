@@ -7,9 +7,10 @@ properties([
 node {
   catchError {
     timeout(time: 300, unit: 'MINUTES') {
-      env.ECR_REGISTRY = "269171237421.dkr.ecr.ap-east-1.amazonaws.com"
+      env.ECR_REGISTRY = "https://269171237421.dkr.ecr.ap-east-1.amazonaws.com"
       env.APPLICATION_NAME = "emperor"
       env.DEPLOYMENT_PROJECT_NAME = "emperor_deployment"
+      env.AWS_REGION = "ap-east-1"
       
       stage('Clone Repository') {
         sh "chmod +x -R ${env.WORKSPACE}"
@@ -88,8 +89,8 @@ def build_app_image(String application_env) {
         '''
       }
       publish_image("${APPLICATION_ENV}_${IMAGE_TAG}")
-      publish_image("${APPLICATION_ENV}_${IMAGE_TAG}-nginx-api")
-      publish_image("${APPLICATION_ENV}_${IMAGE_TAG}-nginx-admin")
+      publish_image("${APPLICATION_ENV}_${IMAGE_TAG}nginx-api")
+      publish_image("${APPLICATION_ENV}_${IMAGE_TAG}nginx-admin")
 
       // tigger deployment if CI_ENV is set
       // deploy_image("${APPLICATION_ENV}")
@@ -102,14 +103,13 @@ def publish_image(String tag) {
   withEnv(["FULL_IMAGE_TAG=${tag}"]) {
     image = docker.image("${APPLICATION_NAME}:${FULL_IMAGE_TAG}")
     echo "image: ${image}"
-    // push to ECR
-    // withCredentials([string(credentialsId: 'app_keeper_aws_access_key_id', variable: 'AKIAT5K63EIWVKKEXZHU'),
-    //                 string(credentialsId: 'app_keeper_aws_secret_access_key', variable: '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')]) {
-      sh '''
-      docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
-      docker push "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
-      '''
-    // }
+    docker.withRegistry("${ECR_REGISTRY}", "ecr:${AWS_REGION}:emperor-aws-ecr") {
+      docker.image("${APPLICATION_NAME}").push("${FULL_IMAGE_TAG}")
+    }
+      // sh '''
+      // docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
+      // docker push "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
+      // '''
   }
 }
 
