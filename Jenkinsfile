@@ -13,7 +13,6 @@ node {
       
       stage('Clone Repository') {
         sh "chmod +x -R ${env.WORKSPACE}"
-        echo "This is ${env.WORKSPACE}"
 
         def scmVars = checkout([
           $class: 'GitSCM',
@@ -83,7 +82,7 @@ def build_app_image(String application_env) {
       ansiColor('xterm') {
         sh "chmod +x -R ${env.WORKSPACE}"
         sh '''
-          ./docker-build.sh ${APPLICATION_NAME} ${APPLICATION_ENV} ${APPLICATION_COMMIT} ${IMAGE_TAG}
+          ./docker-build.sh ${APPLICATION_NAME} ${APPLICATION_ENV} ${APPLICATION_VERSION} ${APPLICATION_COMMIT} ${IMAGE_TAG}
         '''
       }
       publish_image("${APPLICATION_ENV}_${IMAGE_TAG}")
