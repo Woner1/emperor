@@ -51,7 +51,7 @@ node {
               build_app_image('hk-prod')
           case ~/^develop$/:
               build_app_image('hk-test')
-          case ~/^build.*$/:  
+          case ~/^build$/:  
               build_app_image('hk-dev')
               break
           default:
@@ -100,7 +100,6 @@ def build_app_image(String application_env) {
 }
 
 def publish_image(String tag) {
-  // exp
   withEnv(["FULL_IMAGE_TAG=${tag}"]) {
     image = docker.image("${APPLICATION_NAME}:${FULL_IMAGE_TAG}")
     echo "image: ${image}"
