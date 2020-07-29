@@ -92,7 +92,8 @@ def build_app_image(String application_env) {
       publish_image("${APPLICATION_ENV}_${IMAGE_TAG}-nginx-admin")
 
       // tigger deployment if CI_ENV is set
-      deploy_image("${APPLICATION_ENV}")
+      // deploy_image("${APPLICATION_ENV}")
+      echo "finsh build"
     }
   }
 }
@@ -127,10 +128,10 @@ def publish_image(String tag) {
 //   return buildCause;
 // }
 
-def deploy_image(String app_env){
-  if(shouldDeploy("${app_env}")){
-    build job: "${DEPLOYMENT_PROJECT_NAME}", wait: false, parameters: [
-      string(name: 'DEPLOY_ENV', value: "${app_env}"),
-      string(name: 'DEPLOY_VERSION', value: "${IMAGE_TAG}")]
-  }
-}
+// def deploy_image(String app_env){
+//   if(shouldDeploy("${app_env}")){
+//     build job: "${DEPLOYMENT_PROJECT_NAME}", wait: false, parameters: [
+//       string(name: 'DEPLOY_ENV', value: "${app_env}"),
+//       string(name: 'DEPLOY_VERSION', value: "${IMAGE_TAG}")]
+//   }
+// }
