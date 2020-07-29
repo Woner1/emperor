@@ -17,37 +17,36 @@ node {
             [$class: 'CleanCheckout']
           ],
           userRemoteConfigs: scm.userRemoteConfigs
-          // get git info description
-          env.APPLICATION_COMMIT = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-          env.APPLICATION_VERSION = sh(returnStdout: true, script: 'git describe --always --abbrev=8 HEAD').trim()
-          env.SECOND_EPOCH = sh(returnStdout: true, script: 'date +%s').trim()
-          env.IMAGE_TAG = "${APPLICATION_VERSION}-b${SECOND_EPOCH}"
-          echo "Building docker image usring image tag: ${IMAGE_TAG}"
-          // set ci && skipbuild
-          env.CI_ENV = sh(returnStdout: true, script: "git log -1 --format=%B  | sed -n 's/^.*\\[ci \\(.*\\)\\].*/\\1/p'").trim()
-          echo "CI_ENV VALUE: ${CI_ENV}"
-          env.BUILD_HOB_CAUSE = getBuildCase()
-          echo "BUILD_JOB_CAUSE: ${BUILD_HOB_CAUSE}"
-
-          // build docker image
-          if(env.TAG_NAME){
-            build_app_image('hk_prod')
-          }else{
-            brancheName = env.BRANCH_NAME
-            switch(brancheName) {
-              case ~/^master$/:
-                  build_app_image('hk-prod')
-              case ~/^develop$/:
-                  build_app_image('hk-test')
-              case ~/^build.*$/:  
-                  build_app_image('hk-dev')
-                  break
-              default:
-                  echo "Unsupported branch name: ${branchName}"
-            }
-          }
-
         ])
+      }
+      // get git info description
+      env.APPLICATION_COMMIT = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
+      env.APPLICATION_VERSION = sh(returnStdout: true, script: 'git describe --always --abbrev=8 HEAD').trim()
+      env.SECOND_EPOCH = sh(returnStdout: true, script: 'date +%s').trim()
+      env.IMAGE_TAG = "${APPLICATION_VERSION}-b${SECOND_EPOCH}"
+      echo "Building docker image usring image tag: ${IMAGE_TAG}"
+      // set ci && skipbuild
+      env.CI_ENV = sh(returnStdout: true, script: "git log -1 --format=%B  | sed -n 's/^.*\\[ci \\(.*\\)\\].*/\\1/p'").trim()
+      echo "CI_ENV VALUE: ${CI_ENV}"
+      env.BUILD_HOB_CAUSE = getBuildCase()
+      echo "BUILD_JOB_CAUSE: ${BUILD_HOB_CAUSE}"
+
+      // build docker image
+      if(env.TAG_NAME){
+        build_app_image('hk_prod')
+      }else{
+        brancheName = env.BRANCH_NAME
+        switch(brancheName) {
+          case ~/^master$/:
+              build_app_image('hk-prod')
+          case ~/^develop$/:
+              build_app_image('hk-test')
+          case ~/^build.*$/:  
+              build_app_image('hk-dev')
+              break
+          default:
+              echo "Unsupported branch name: ${branchName}"
+        }
       }
     }
   }
