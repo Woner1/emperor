@@ -16,14 +16,14 @@ docker build -t $APP_NAME:${APP_ENV}_${IMAGE_TAG} -f Dockerfile --force-rm \
     --build-arg APP_COMMIT="$APP_COMMIT" .
 
 # build nginx for api endponit
-SUFFIX="-nginx-api"
+SUFFIX="nginx-api"
 docker build -t "$APP_NAME:${APP_ENV}_${IMAGE_TAG}_${SUFFIX}" -f ./nginx/api/Dockerfile --force-rm \
     --build-arg APP_NAME="$APP_NAME" \
     --build-arg APP_ENV="$APP_ENV" \
     --build-arg APP_COMMIT="$APP_COMMIT" ./nginx/api/
 
 # build nginx for admin endponit
-SUFFIX="-nginx-admin"
+SUFFIX="nginx-admin"
 docker build -t "$APP_NAME:${APP_ENV}_${IMAGE_TAG}_${SUFFIX}" -f ./nginx/admin/Dockerfile --force-rm \
     --build-arg APP_NAME="$APP_NAME" \
     --build-arg APP_ENV="$APP_ENV" \

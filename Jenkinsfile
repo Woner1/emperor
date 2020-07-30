@@ -51,8 +51,6 @@ node {
               build_app_image('hk-prod')
           case ~/^develop$/:
               build_app_image('hk-test')
-          case ~/^build$/:  
-              build_app_image('hk-dev')
               break
           default:
               echo "Unsupported branch name: ${branchName}"
@@ -103,11 +101,9 @@ def publish_image(String tag) {
   withEnv(["FULL_IMAGE_TAG=${tag}"]) {
     image = docker.image("${APPLICATION_NAME}:${FULL_IMAGE_TAG}")
     echo "image: ${image}"
+    echo "FULL_IMAGE_TAG: ${FULL_IMAGE_TAG}"
     docker.withRegistry("https://${ECR_REGISTRY}", "ecr:${AWS_REGION}:emperor-aws-ecr") {
-      // docker.image("${APPLICATION_NAME}").push("latest")
-      def customImage = docker.build("${APPLICATION_NAME}:${FULL_IMAGE_TAG}")
-      /* Push the container to the custom Registry */
-      customImage.push()
+      docker.image("${APPLICATION_NAME}").push("${FULL_IMAGE_TAG}")
     }
       // sh '''
       // docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
