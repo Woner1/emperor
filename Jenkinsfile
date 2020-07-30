@@ -135,5 +135,3 @@ def deploy_image(String app_env){
       string(name: 'DEPLOY_VERSION', value: "${IMAGE_TAG}")]
   }
 }
-
-// this is end 
