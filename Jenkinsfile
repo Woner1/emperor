@@ -40,7 +40,7 @@ node {
       // build docker image
 
       // set BRANCH_NAME value
-      def BRANCH_NAME = "develop"
+      // def BRANCH_NAME = "develop"
 
       if(env.TAG_NAME){
         build_app_image('hk_prod')
