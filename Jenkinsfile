@@ -49,12 +49,14 @@ node {
         brancheName = "${BRANCH_NAME}"
         switch(brancheName) {
           case ~/^master$/:
-              build_app_image('hk-prod')
+              build_app_image('hk-prod');
+              break;
           case ~/^develop$/:
-              build_app_image('hk-test')
+              build_app_image('hk-test');
+              break;
           case ~/^build.*/:
-              build_app_image('hk-dev')
-              break
+              build_app_image('hk-dev');
+              break;
           default:
               echo "Unsupported branch name: ${branchName}"
         }
