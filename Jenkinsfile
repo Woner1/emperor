@@ -52,7 +52,7 @@ node {
               build_app_image('hk-prod')
           case ~/^develop$/:
               build_app_image('hk-test')
-          case ~/^build.*/
+          case ~/^build.*/:
               build_app_image('hk-dev')
               break
           default:
