@@ -87,8 +87,8 @@ def build_app_image(String application_env) {
         '''
       }
       publish_image("${APPLICATION_ENV}_${IMAGE_TAG}")
-      publish_image("${APPLICATION_ENV}_${IMAGE_TAG}nginx-api")
-      publish_image("${APPLICATION_ENV}_${IMAGE_TAG}nginx-admin")
+      publish_image("${APPLICATION_ENV}_${IMAGE_TAG}_nginx_api")
+      publish_image("${APPLICATION_ENV}_${IMAGE_TAG}_nginx_admin")
 
       // tigger deployment if CI_ENV is set
       // deploy_image("${APPLICATION_ENV}")
@@ -103,7 +103,7 @@ def publish_image(String tag) {
     echo "image: ${image}"
     echo "FULL_IMAGE_TAG: ${FULL_IMAGE_TAG}"
     docker.withRegistry("https://${ECR_REGISTRY}", "ecr:${AWS_REGION}:emperor-aws-ecr") {
-      docker.image("${APPLICATION_NAME}").push("${FULL_IMAGE_TAG}")
+      docker.image("${APPLICATION_NAME}:${FULL_IMAGE_TAG}").push()
     }
       // sh '''
       // docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"

@@ -10,20 +10,23 @@ APP_COMMIT=$4
 IMAGE_TAG=$5
 
 # build rails application image
+# emperor_hk_test_xxxxx
 docker build -t $APP_NAME:${APP_ENV}_${IMAGE_TAG} -f Dockerfile --force-rm \
     --build-arg APP_NAME="$APP_NAME" \
     --build-arg APP_ENV="$APP_ENV" \
     --build-arg APP_COMMIT="$APP_COMMIT" .
 
 # build nginx for api endponit
-SUFFIX="nginx-api"
+# emperor_hk_test_xxxxx_nginx_api
+SUFFIX="nginx_api"
 docker build -t "$APP_NAME:${APP_ENV}_${IMAGE_TAG}_${SUFFIX}" -f ./nginx/api/Dockerfile --force-rm \
     --build-arg APP_NAME="$APP_NAME" \
     --build-arg APP_ENV="$APP_ENV" \
     --build-arg APP_COMMIT="$APP_COMMIT" ./nginx/api/
 
 # build nginx for admin endponit
-SUFFIX="nginx-admin"
+# emperor_hk_test_xxxxx_nginx_admin
+SUFFIX="nginx_admin"
 docker build -t "$APP_NAME:${APP_ENV}_${IMAGE_TAG}_${SUFFIX}" -f ./nginx/admin/Dockerfile --force-rm \
     --build-arg APP_NAME="$APP_NAME" \
     --build-arg APP_ENV="$APP_ENV" \
