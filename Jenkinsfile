@@ -39,26 +39,22 @@ node {
       // echo "BUILD_JOB_CAUSE: ${BUILD_HOB_CAUSE}"
       // build docker image
 
-      // set BRANCH_NAME value
-      // def BRANCH_NAME = "develop"
-
       if(env.TAG_NAME){
         build_app_image('hk_prod')
       }else{
-        echo "The branch is ${BRANCH_NAME}"
-        brancheName = "${BRANCH_NAME}"
+        branchName = env.BRANCHNAME
         switch(brancheName) {
           case ~/^master$/:
-              build_app_image('hk-prod');
-              break;
+            build_app_image('hk-prod');
+            break;
           case ~/^develop$/:
-              build_app_image('hk-test');
-              break;
+            build_app_image('hk-test');
+            break;
           case ~/^build.*/:
-              build_app_image('hk-dev');
-              break;
+            build_app_image('hk-dev');
+            break;
           default:
-              echo "Unsupported branch name: ${branchName}"
+            echo "Unsupported branch name: ${branchName}"
         }
       }
     }
@@ -82,7 +78,6 @@ def build_app_image(String application_env) {
   }
   withEnv(["APPLICATION_ENV=${application_env}"]) {
     stage("Build image: ${APPLICATION_NAME}_${APPLICATION_ENV}") {
-      echo "next to build image"
       echo "Build image for ${APPLICATION_NAME}, env: ${APPLICATION_ENV}, version: ${APPLICATION_VERSION}, commit: ${APPLICATION_COMMIT}"
       ansiColor('xterm') {
         sh "chmod +x -R ${env.WORKSPACE}"
@@ -97,7 +92,6 @@ def build_app_image(String application_env) {
 
       // tigger deployment if CI_ENV is set
       // deploy_image("${APPLICATION_ENV}")
-      echo "finsh build"
     }
   }
 }
