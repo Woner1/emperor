@@ -42,8 +42,8 @@ node {
       if(env.TAG_NAME){
         build_app_image('hk_prod')
       }else{
-        branchName = env.BRANCHNAME
-        echo "This is branchName: ${branchName}"
+        echo "The branch is ${BRANCH_NAME}"
+        brancheName = "${BRANCH_NAME}"
         switch(brancheName) {
           case ~/^master$/:
             build_app_image('hk-prod');
