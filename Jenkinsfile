@@ -105,7 +105,7 @@ def publish_image(String tag) {
       docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
       docker push "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
       '''
-    // }
+    }
   }
 }
 
