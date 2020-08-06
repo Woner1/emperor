@@ -83,7 +83,7 @@ def build_app_image(String application_env) {
         sh "chmod +x -R ${env.WORKSPACE}"
         sh '''
           set +x
-          ./docker-build.sh ${APPLICATION_NAME} ${APPLICATION_ENV} ${APPLICATION_VERSION} ${APPLICATION_COMMIT} ${IMAGE_TAG}
+          ./docker-build.sh ${APPLICATION_NAME} ${APPLICATION_ENV} ${APPLICATION_VERSION} ${APPLICATION_COMMIT} ${IMAGE_TAG} ${ECR_REGISTRY}
         '''
       }
       publish_image("${APPLICATION_ENV}_${IMAGE_TAG}")
