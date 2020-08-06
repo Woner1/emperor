@@ -6,7 +6,7 @@ properties([
 
 node {
   catchError {
-    timeout(time: 300, unit: 'MINUTES') {
+    timeout(time: 20, unit: 'MINUTES') {
       env.ECR_REGISTRY = "269171237421.dkr.ecr.ap-east-1.amazonaws.com"
       env.APPLICATION_NAME = "emperor"
       env.DEPLOYMENT_PROJECT_NAME = "emperor_deployment"
@@ -98,10 +98,14 @@ def build_app_image(String application_env) {
 
 def publish_image(String tag) {
   withEnv(["FULL_IMAGE_TAG=${tag}"]) {
-    echo "image --> ${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
-    docker.withRegistry("https://${ECR_REGISTRY}", "ecr:${AWS_REGION}:emperor-aws-ecr") {
-      docker.image("${APPLICATION_NAME}:${FULL_IMAGE_TAG}").push()
-    }
+    // push to ecr
+    withCredentials([string(credentialsId: 'app_keeper_aws_access_key_id', variable: 'AKIAT5K63EIWVKKEXZHU'),
+                    string(credentialsId: 'app_keeper_aws_secret_access_key', variable: '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')]) {
+      sh '''
+      docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
+      docker push "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
+      '''
+    // }
   }
 }
 
