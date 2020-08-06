@@ -99,8 +99,7 @@ def build_app_image(String application_env) {
 def publish_image(String tag) {
   withEnv(["FULL_IMAGE_TAG=${tag}"]) {
     // push to ecr
-    withCredentials([string(credentialsId: 'app_keeper_aws_access_key_id', variable: 'AKIAT5K63EIWVKKEXZHU'),
-                    string(credentialsId: 'app_keeper_aws_secret_access_key', variable: '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')]) {
+    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AKIAT5K63EIWVKKEXZHU', credentialsId: '', secretKeyVariable: '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']]) {
       sh '''
       docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
       docker push "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
