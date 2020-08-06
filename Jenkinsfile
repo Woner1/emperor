@@ -99,7 +99,7 @@ def build_app_image(String application_env) {
 def publish_image(String tag) {
   withEnv(["FULL_IMAGE_TAG=${tag}"]) {
     // push to ecr
-    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AKIAT5K63EIWVKKEXZHU', credentialsId: '', secretKeyVariable: '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']]) {
+    withAWS(credentials: 'emperor-aws-ecr', region: 'ap-east-1') {
       sh '''
       docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
       docker push "${ECR_REGISTRY}/${APPLICATION_NAME}:${FULL_IMAGE_TAG}"
