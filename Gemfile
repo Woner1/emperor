@@ -3,12 +3,15 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.5.1'
 
-gem 'rubocop', '~> 0.85.1', require: false
 # code style checker
+gem 'rubocop', '~> 0.85.1'
 
-gem 'sentry-raven'
 # send message to sentry
+gem 'sentry-raven'
 
+# Loads environment variables from `.env`.
+# gem 'dotenv', '~> 2.1', '>= 2.1.1'
+gem 'dotenv-rails', require: 'dotenv/rails-now'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.3'
