@@ -13,6 +13,9 @@ gem 'sentry-raven'
 # gem 'dotenv', '~> 2.1', '>= 2.1.1'
 gem 'dotenv-rails', require: 'dotenv/rails-now'
 
+# 基于纯真 IP 库解析中国的 IP
+gem 'ip_locator_cn'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.3'
 # Use postgresql as the database for Active Record
