@@ -7,13 +7,13 @@ properties([
 node {
   catchError {
     timeout(time: 20, unit: 'MINUTES') {
-      env.ECR_REGISTRY = "269171237421.dkr.ecr.ap-east-1.amazonaws.com"
+      env.ECR_REGISTRY = "registry.cn-hangzhou.aliyuncs.com"
       env.APPLICATION_NAME = "emperor"
       env.DEPLOYMENT_PROJECT_NAME = "emperor_deployment"
-      env.AWS_REGION = "ap-east-1"
-      
+      env.ALIYUN_REPOSITORY = 'ankh/emperor'
+      env.ALIYUN_PASSWORD = 'q15991599'
+      env.ALIYUN_USERNAME = '15217923947'      
       stage('Clone Repository') {
-        sh "chmod +x -R ${env.WORKSPACE}"
 
         def scmVars = checkout([
           $class: 'GitSCM',
@@ -80,7 +80,6 @@ def build_app_image(String application_env) {
     stage("Build image: ${APPLICATION_NAME}_${APPLICATION_ENV}") {
       echo "Build image for ${APPLICATION_NAME}, env: ${APPLICATION_ENV}, version: ${APPLICATION_VERSION}, commit: ${APPLICATION_COMMIT}"
       ansiColor('xterm') {
-        sh "chmod +x -R ${env.WORKSPACE}"
         sh '''
           set +x
           ./docker-build.sh ${APPLICATION_NAME} ${APPLICATION_ENV} ${APPLICATION_VERSION} ${APPLICATION_COMMIT} ${IMAGE_TAG}
@@ -98,10 +97,13 @@ def build_app_image(String application_env) {
 
 def publish_image(String tag) {
   withEnv(["FULL_IMAGE_TAG=${tag}"]) {
-    // push to ecr
-    docker.withRegistry("https://${ECR_REGISTRY}", "ecr:${AWS_REGION}:emperor-aws-ecr") {
-      docker.image("${APPLICATION_NAME}:${FULL_IMAGE_TAG}").push()
-    }
+    // push to aliyun registry
+    sh '''
+      set +x
+      docker login --username=${ALIYUN_USERNAME} --password=${ALIYUN_PASSWORD} registry.cn-hangzhou.aliyuncs.com
+      docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}:${FULL_IMAGE_TAG}"
+      docker push "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}:${FULL_IMAGE_TAG}"
+    '''
   }
 }
 
