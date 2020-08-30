@@ -7,10 +7,9 @@ properties([
 node {
   catchError {
     timeout(time: 20, unit: 'MINUTES') {
-      env.ECR_REGISTRY = "registry.cn-hangzhou.aliyuncs.com"
+      env.ECR_REGISTRY = "registry.eu-central-1.aliyuncs.com/ankh/emperor"
       env.APPLICATION_NAME = "emperor"
       env.DEPLOYMENT_PROJECT_NAME = "emperor_deployment"
-      env.ALIYUN_REPOSITORY = 'ankh/emperor'
       env.ALIYUN_PASSWORD = 'q15991599'
       env.ALIYUN_USERNAME = '15217923947'      
       stage('Clone Repository') {
@@ -101,8 +100,8 @@ def publish_image(String tag) {
     sh '''
       set +x
       docker login --username=${ALIYUN_USERNAME} --password=${ALIYUN_PASSWORD} registry.cn-hangzhou.aliyuncs.com
-      docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}:${FULL_IMAGE_TAG}"
-      docker push "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}:${FULL_IMAGE_TAG}"
+      docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}:${FULL_IMAGE_TAG}"
+      docker push "${ECR_REGISTRY}:${FULL_IMAGE_TAG}"
     '''
   }
 }
