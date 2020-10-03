@@ -1,17 +1,17 @@
 # README
-      This README would normally document whatever steps are necessary to get the
-      application up and running.
+    This README would normally document whatever steps are necessary to get the
+    application up and running.
 
-      Things you may want to cover:
+    Things you may want to cover:
 
-      * Ruby version 5.2.1
+    * Ruby version 5.2.1
 
-      * Rails version 5.2.4
+    * Rails version 5.2.4
   
-# Gem Feature
+# `Gem Feature`
 
 
-### Use Gem Package
+### `Use Gem Package`
 
   - [ ] use gem `'cancan'` set permission control
 
@@ -23,36 +23,44 @@
 
   - [ ] use gem `'resque'` Resque (pronounced like "rescue") is a Redis-backed library for creating background jobs, placing those jobs on multiple queues, and processing them later.
 
-  - [ ] use gem `'puma'` Puma is a small library that provides a very fast and concurrent HTTP 1.1 server for Ruby web applications.
+  - [x] use gem `'puma'` Puma is a small library that provides a very fast and concurrent HTTP 1.1 server for Ruby web applications.
 
-# Use Vault
+# `Use Vault`
     Manage Secrets and Protect Sensitive Data
 
-# graphql
+# `graphql`
     GraphQL 既是一种用于 API 的查询语言也是一个满足你数据查询的运行时。 GraphQL 对你的 API 中的数据提供了一套易于理解的完整描述，使得客户端能够准确地获得它需要的数据，而且没有任何冗余，也让 API 更容易地随着时间推移而演进，还能用于构建强大的开发者工具。
 
-# grpc 分布式系统通讯
+# `grpc 分布式系统通讯`
   * [ ] java
   * [ ] ruby
   * [ ] python
   * [ ] go
 
-# docker and Kubernetes
+# `docker and Kubernetes`
   * `RUN` runing on docker builde
   * `CMD` runing on docker run, runing end of docker build
   * `ENV` works all the time
   * `ARG` works stop until docker end of build
 
-# Jenkins
+# `Jenkins`
   [Jenkins docs](https://www.jenkins.io/zh/doc/)
 
-# Nginx
+# `Nginx`
 
-# ElaticSearch
+# `ElaticSearch`
 
-# Prometheus
+# `Prometheus`
+[Prometheus docs](./docs/how_to_monitor_website.md)
 
+[Granafa docs](./docs/how_to_monitor_website.md)
 
-  562abcdfe614ea8de4d650954664d36b9031641a
+[Cadvios docs](./docs/how_to_monitor_website.md)
+
+[Node Exporter docs](https://github.com/prometheus/node_exporter)
+
+[Jenkins Prometheus metrics docs](https://plugins.jenkins.io/prometheus/)
+
+# `TailWind Css`s
 * ...
 
