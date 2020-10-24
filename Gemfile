@@ -13,8 +13,21 @@ gem 'sentry-raven'
 # gem 'dotenv', '~> 2.1', '>= 2.1.1'
 gem 'dotenv-rails', require: 'dotenv/rails-now'
 
-# 基于纯真 IP 库解析中国的 IP
+# IP
 gem 'ip_locator_cn'
+
+# Upload files in your Ruby applications, map them to a range of ORMs, store them on different backends.
+gem 'carrierwave'
+# Use aws-sdk for S3 support in CarrierWave
+gem 'carrierwave-aws', '~> 1.5'
+gem 'aws-sdk-rails'
+# A ruby wrapper for ImageMagick or GraphicsMagick command line.
+gem 'mini_magick'
+
+# Debug
+gem 'byebug'
+gem 'pry'
+gem 'pry-byebug'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.3'
@@ -51,7 +64,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  # gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end
 
 group :development do
