@@ -29,6 +29,9 @@ gem 'byebug'
 gem 'pry'
 gem 'pry-byebug'
 
+# AWS ECS Deploy Tool
+gem 'ufo', '~> 5.0', '>= 5.0.2'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.3'
 # Use postgresql as the database for Active Record

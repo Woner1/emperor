@@ -7,12 +7,13 @@ properties([
 node {
   catchError {
     timeout(time: 20, unit: 'MINUTES') {
-      env.ECR_REGISTRY = "registry.cn-hangzhou.aliyuncs.com"
+      env.ECR_REGISTRY = "registry.us-east-1.aliyuncs.com"
       env.APPLICATION_NAME = "emperor"
       env.DEPLOYMENT_PROJECT_NAME = "emperor_deployment"
       env.ALIYUN_REPOSITORY = 'ankh/emperor'
       env.ALIYUN_PASSWORD = 'q15991599'
-      env.ALIYUN_USERNAME = '15217923947'      
+      env.ALIYUN_USERNAME = '15217923947'   
+      env.ECS_TASK_EXECUTION_ROLE = 'arn:aws:iam::964359640322:role/ECSTaskExecutionRole'   
       stage('Clone Repository') {
 
         def scmVars = checkout([
@@ -40,18 +41,18 @@ node {
       // build docker image
 
       if(env.TAG_NAME){
-        build_app_image('hk_prod')
+        build_app_image('prod')
       }else{
         brancheName = "${BRANCH_NAME}"
         switch(brancheName) {
           case ~/^master$/:
-            build_app_image('hk-prod');
+            build_app_image('prod');
             break;
           case ~/^develop$/:
-            build_app_image('hk-test');
+            build_app_image('test');
             break;
           case ~/^build.*/:
-            build_app_image('hk-dev');
+            build_app_image('dev');
             break;
           default:
             echo "Unsupported branch name: ${branchName}"
@@ -100,9 +101,11 @@ def publish_image(String tag) {
     // push to aliyun registry
     sh '''
       set +x
-      docker login --username=${ALIYUN_USERNAME} --password=${ALIYUN_PASSWORD} registry.cn-hangzhou.aliyuncs.com
-      docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}:${FULL_IMAGE_TAG}"
-      docker push "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}:${FULL_IMAGE_TAG}"
+      ufo init --image "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}" --launch-type ec2 --execution-role-arn "${ECS_TASK_EXECUTION_ROLE}"
+      docker login --username=${ALIYUN_USERNAME} --password=${ALIYUN_PASSWORD} ${ECR_REGISTRY}
+      // docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}:${FULL_IMAGE_TAG}"
+      // docker push "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}:${FULL_IMAGE_TAG}"
+      ufo docker build --push
     '''
   }
 }
