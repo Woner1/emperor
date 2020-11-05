@@ -1,0 +1,32 @@
+---
+vpc: vpc-75906b08
+ecs_subnets: # required: at least 2 subnets
+  - subnet-1f248c40
+  - subnet-34a1c03a
+  - subnet-425caf73
+  - subnet-4f54fe6e
+  - subnet-77d77811
+  - subnet-e5a6d9a8
+elb_subnets: # defaults to same subnets as ecs_subnets when not set
+  - subnet-1f248c40
+  - subnet-34a1c03a
+  - subnet-425caf73
+  - subnet-4f54fe6e
+  - subnet-77d77811
+  - subnet-e5a6d9a8
+
+# Optional additional existing security group ids to add on top of the ones created by ufo.
+# elb_security_groups:
+#   - sg-aaa
+# ecs_security_groups:
+#   - sg-bbb
+#   - sg-ccc
+
+# Also supports extra security groups specific to each ECS service
+# ecs_security_groups:
+#   demo-web:
+#   - sg-bbb
+#   - sg-ccc
+#   demo-worker:
+#   - sg-bbb
+#   - sg-ccc

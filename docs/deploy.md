@@ -12,7 +12,7 @@ You can install ufo with RubyGems:
 The docker image tag that is generated contains a useful timestamp and the current HEAD git sha of the project that you are on.
 
 ```shell
-ufo init --image $ECR_REPO --launch-type ec2 --execution-role-arn arn:aws:iam::$AWS_ACCOUNT:role/ECSTaskExecutionRole
+ufo init --app ${APPLICATION_NAME} --image ${ALIYUN_REPOSITORY} --execution-role-arn ${ECS_TASK_EXECUTION_ROLE}
 
 ufo docker build --push
 

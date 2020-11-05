@@ -13,7 +13,7 @@ node {
       env.ALIYUN_REPOSITORY = 'ankh/emperor'
       env.ALIYUN_PASSWORD = 'q15991599'
       env.ALIYUN_USERNAME = '15217923947'   
-      env.ECS_TASK_EXECUTION_ROLE = 'arn:aws:iam::964359640322:role/ECSTaskExecutionRole'   
+      env.ECS_TASK_EXECUTION_ROLE = 'arn:aws:iam::$AWS_ACCOUNT:role/ECSTaskExecutionRole'
       stage('Clone Repository') {
 
         def scmVars = checkout([
@@ -83,6 +83,7 @@ def build_app_image(String application_env) {
       ansiColor('xterm') {
         sh '''
           set +x
+          ufo init  --app ${APPLICATION_NAME} --image ${ALIYUN_REPOSITORY} --execution-role-arn ${ECS_TASK_EXECUTION_ROLE} --skip .env
           ./docker-build.sh ${APPLICATION_NAME} ${APPLICATION_ENV} ${APPLICATION_VERSION} ${APPLICATION_COMMIT} ${IMAGE_TAG}
         '''
       }
@@ -101,11 +102,9 @@ def publish_image(String tag) {
     // push to aliyun registry
     sh '''
       set +x
-      ufo init --image "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}" --launch-type ec2 --execution-role-arn "${ECS_TASK_EXECUTION_ROLE}"
       docker login --username=${ALIYUN_USERNAME} --password=${ALIYUN_PASSWORD} ${ECR_REGISTRY}
-      // docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}:${FULL_IMAGE_TAG}"
-      // docker push "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}:${FULL_IMAGE_TAG}"
-      ufo docker build --push
+      docker tag "${APPLICATION_NAME}:${FULL_IMAGE_TAG}" "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}:${FULL_IMAGE_TAG}"
+      docker push "${ECR_REGISTRY}/${ALIYUN_REPOSITORY}:${FULL_IMAGE_TAG}"
     '''
   }
 }

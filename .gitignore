@@ -23,4 +23,7 @@
 /public/assets
 .byebug_history
 
-/.idea
+/.idea.ufo/current
+.ufo/data
+.ufo/log
+.ufo/output

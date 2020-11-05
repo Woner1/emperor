@@ -17,3 +17,4 @@ config/database.yml.*
 bin/*
 !bin/rails
 !bin/bundle
+.ufo
